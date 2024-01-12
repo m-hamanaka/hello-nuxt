@@ -22,6 +22,8 @@
 <template>
   <div>
     <label for="cocktailNo">カクテル番号：</label>
+    <!-- v-model ディレクティブを使って、cocktailNoというデータと
+    この <input> 要素を双方向にバインディング -->
     <input id="cocktailNo" v-model="cocktailNo" type="number" />
 
     <p>{{ priceMsg }}</p>
