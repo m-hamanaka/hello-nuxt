@@ -1,37 +1,29 @@
-
-<!-- ボタンをクリックすると、msg の値が "Hello" とボタンのテキストである
-"こんにちは" と組み合わされて更新され、それが表示されるという動作 -->
-
 <script setup lang="ts">
 
-  //ref 関数を使用して、msg というリアクティブな変数を作成し、初期値を "まだ" に設定
-  const msg = ref("まだ");
+  //Nuxt.jsのオートインポートが適用
+  //import { watchEffect, ref } from 'vue';
 
-  //ボタンがクリックされたときに呼び出される関数 onButtonClick を定義
-  //メソッドを定義 アロー関数を変数に代入 constメソッド名 = (引数): void => {
-  //label と event という2つの引数を受け取り、
-  //ボタンのテキストとして label を、
-  //ボタン要素のテキストコンテンツとして event.target から取得したものを組み合わせて、
-  //msg の値を更新
-  const onButtonClick = (label: string, event: Event): void => {
+  const cocktailNo = ref(1);
+  const priceMsg = ref("");
 
-    //TypeScript における型キャストの書き方
-    //イベントオブジェクト (event) から target プロパティを取得し、
-    //その値を HTMLButtonElement 型にキャスト
-    const target = event.target as HTMLButtonElement;
-    const text = target.innerText;
-    msg.value = `${label}と${text}`;
-  };
+  //watchEffect を使用して cocktailNo の変更を監視し、
+  //その変更に応じて getCocktailInfo メソッドを呼び出して priceMsg を更新
+  watchEffect(() => {
+    priceMsg.value = getCocktailInfo(cocktailNo.value);
+  });
+
+  function getCocktailInfo(cocktailNo: number): string {
+    // ここで実際のロジックを実装し、カクテル番号に基づいて価格情報を取得
+    // 仮に、ダミーのロジックとして定義
+    return `カクテル番号 ${cocktailNo} の価格情報です。`;
+  }
 </script>
 
 <template>
-  <!-- ボタンがクリックされると更新 -->
-  <p>{{ msg }}</p>
+  <div>
+    <label for="cocktailNo">カクテル番号：</label>
+    <input id="cocktailNo" v-model="cocktailNo" type="number" />
 
-  <!-- メソッドをv-onディレクティブでイベントハンドラとする -->
-  <!-- v-on:click ディレクティブは、クリックイベントが発生したときに指定されたメソッドを呼び出す -->
-  <button v-on:click="onButtonClick('Hello', $event)">こんにちは</button>
-
-  <!-- $event は、クリックイベント自体を引数として渡すための特殊な構文
-  "Hello" という文字列を label として onButtonClick メソッドに渡す -->
+    <p>{{ priceMsg }}</p>
+  </div>
 </template>
